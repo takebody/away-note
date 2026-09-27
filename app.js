@@ -69,8 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (setupClock) setupClock.textContent = timeString;
     if (awayCurrentTime) awayCurrentTime.textContent = timeString;
     
-    // Recalculate preview when clock updates
-    calculateReturnTime();
+    // Recalculate preview when clock updates (only when setup view is active)
+    if (setupView && setupView.classList.contains('active')) {
+      calculateReturnTime();
+    }
   }
 
   clockInterval = setInterval(updateClocks, 1000);
@@ -326,6 +328,9 @@ document.addEventListener('DOMContentLoaded', () => {
       timerSeconds.textContent = String(seconds).padStart(2, '0');
     } else {
       // Time is up / Overdue
+      timerHours.textContent = '00';
+      timerMinutes.textContent = '00';
+      timerSeconds.textContent = '00';
       timeupBanner.classList.remove('hidden');
 
       const overdueMs = Math.abs(diff);
